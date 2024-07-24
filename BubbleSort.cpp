@@ -1,4 +1,4 @@
-﻿#include "graphics.h"
+#include "graphics.h"
 #include <windows.h>
 #include <iostream>
 #include <cstdlib>
@@ -25,23 +25,38 @@ void veMang(int a[], int n, int trai, int tren, int phai, int duoi) {
     }
 }
 
-// Hàm nhấp nháy hình chữ nhật
-void nhapNhayHinhChuNhat(int trai, int tren, int phai, int duoi, int giatri) {
-    char giatri_txt[10];
-    sprintf_s(giatri_txt, sizeof(giatri_txt), "%d", giatri);
-    double giatri_x = trai + (phai - trai) / 2 - 5;
-    double giatri_y = tren + (duoi - tren) / 2.5;
+// Hàm nhấp nháy hai hình chữ nhật cùng lúc
+void nhapNhayHaiHinhChuNhat(int trai1, int tren1, int phai1, int duoi1, int giatri1,
+    int trai2, int tren2, int phai2, int duoi2, int giatri2) {
+    char giatri_txt1[10], giatri_txt2[10];
+    sprintf_s(giatri_txt1, sizeof(giatri_txt1), "%d", giatri1);
+    sprintf_s(giatri_txt2, sizeof(giatri_txt2), "%d", giatri2);
+    double giatri_x1 = trai1 + (phai1 - trai1) / 2 - 5;
+    double giatri_y1 = tren1 + (duoi1 - tren1) / 2.5;
+    double giatri_x2 = trai2 + (phai2 - trai2) / 2 - 5;
+    double giatri_y2 = tren2 + (duoi2 - tren2) / 2.5;
 
     for (int k = 0; k < 3; k++) {
         setfillstyle(SOLID_FILL, YELLOW);
-        bar(trai, tren, phai, duoi);
-        outtextxy(giatri_x, giatri_y, giatri_txt);
-        rectangle(trai, tren, phai, duoi);
+        bar(trai1, tren1, phai1, duoi1);
+        outtextxy(giatri_x1, giatri_y1, giatri_txt1);
+        rectangle(trai1, tren1, phai1, duoi1);
+
+        bar(trai2, tren2, phai2, duoi2);
+        outtextxy(giatri_x2, giatri_y2, giatri_txt2);
+        rectangle(trai2, tren2, phai2, duoi2);
+
         delay(150);
+
         setfillstyle(SOLID_FILL, BLACK);
-        bar(trai, tren, phai, duoi);
-        outtextxy(giatri_x, giatri_y, giatri_txt);
-        rectangle(trai, tren, phai, duoi);
+        bar(trai1, tren1, phai1, duoi1);
+        outtextxy(giatri_x1, giatri_y1, giatri_txt1);
+        rectangle(trai1, tren1, phai1, duoi1);
+
+        bar(trai2, tren2, phai2, duoi2);
+        outtextxy(giatri_x2, giatri_y2, giatri_txt2);
+        rectangle(trai2, tren2, phai2, duoi2);
+
         delay(150);
     }
 }
@@ -79,8 +94,8 @@ void sapXepNoiBot(int a[], int n, int luachon) {
 
             // So sánh và hoán đổi nếu cần
             if ((luachon == 1 && a[j] > a[j + 1]) || (luachon == 2 && a[j] < a[j + 1])) {
-                nhapNhayHinhChuNhat(trai_j, tren, phai_j, duoi, a[j]);
-                nhapNhayHinhChuNhat(trai_j1, tren, phai_j1, duoi, a[j + 1]);
+                nhapNhayHaiHinhChuNhat(trai_j, tren, phai_j, duoi, a[j],
+                    trai_j1, tren, phai_j1, duoi, a[j + 1]);
 
                 int temp = a[j];
                 a[j] = a[j + 1];
