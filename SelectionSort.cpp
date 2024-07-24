@@ -1,26 +1,39 @@
-﻿#include "graphics.h"
+#include "graphics.h"
 #include <windows.h> 
 #include <iostream>
 #include <cstdlib>
 #pragma comment(lib, "graphics.lib")
 using namespace std;
 
-void blinkRectangle(int left, int top, int right, int bottom, int value) {
-    char giatri[10];
-    sprintf_s(giatri, sizeof(giatri), "%d", value);
-    double giatri_x = left + (right - left) / 2 - 5;
-    double giatri_y = top + (bottom - top) / 2.5;
+void blinkRectangleSimultaneous(int left1, int top1, int right1, int bottom1, int value1,
+    int left2, int top2, int right2, int bottom2, int value2) {
+    char giatri1[10], giatri2[10];
+    sprintf_s(giatri1, sizeof(giatri1), "%d", value1);
+    sprintf_s(giatri2, sizeof(giatri2), "%d", value2);
+    double giatri_x1 = left1 + (right1 - left1) / 2 - 5;
+    double giatri_y1 = top1 + (bottom1 - top1) / 2.5;
+    double giatri_x2 = left2 + (right2 - left2) / 2 - 5;
+    double giatri_y2 = top2 + (bottom2 - top2) / 2.5;
 
     for (int k = 0; k < 3; k++) {
         setfillstyle(SOLID_FILL, YELLOW);
-        bar(left, top, right, bottom);
-        outtextxy(giatri_x, giatri_y, giatri);
-        rectangle(left, top, right, bottom);
+        bar(left1, top1, right1, bottom1);
+        outtextxy(giatri_x1, giatri_y1, giatri1);
+        rectangle(left1, top1, right1, bottom1);
+
+        bar(left2, top2, right2, bottom2);
+        outtextxy(giatri_x2, giatri_y2, giatri2);
+        rectangle(left2, top2, right2, bottom2);
         delay(150);
+
         setfillstyle(SOLID_FILL, BLACK);
-        bar(left, top, right, bottom);
-        outtextxy(giatri_x, giatri_y, giatri);
-        rectangle(left, top, right, bottom);
+        bar(left1, top1, right1, bottom1);
+        outtextxy(giatri_x1, giatri_y1, giatri1);
+        rectangle(left1, top1, right1, bottom1);
+
+        bar(left2, top2, right2, bottom2);
+        outtextxy(giatri_x2, giatri_y2, giatri2);
+        rectangle(left2, top2, right2, bottom2);
         delay(150);
     }
 }
@@ -159,8 +172,7 @@ int main() {
         int left_min = 50 + (min_pos) * 100;
         int right_min = 150 + (min_pos) * 100;
 
-        blinkRectangle(left_i, top, right_i, bottom, a[i]);
-        blinkRectangle(left_min, top, right_min, bottom, a[min_pos]);
+        blinkRectangleSimultaneous(left_i, top, right_i, bottom, a[i], left_min, top, right_min, bottom, a[min_pos]);
 
         // Swap values
         int temp = a[min_pos];
