@@ -1,4 +1,4 @@
-﻿#include "graphics.h"
+#include"graphics.h"
 #include <windows.h>
 #include <iostream>
 #include <cstdlib>
@@ -33,7 +33,7 @@ void nhapNhayHinhChuNhat(int trai, int tren, int phai, int duoi, int giatri) {
     double giatri_y = tren + (duoi - tren) / 2.5;
 
     for (int k = 0; k < 3; k++) {
-        setfillstyle(SOLID_FILL, YELLOW);
+        setfillstyle(SOLID_FILL, RED);
         bar(trai, tren, phai, duoi);
         outtextxy(giatri_x, giatri_y, giatri_txt);
         rectangle(trai, tren, phai, duoi);
@@ -67,7 +67,7 @@ void sapXepDoiChoTrucTiep(int a[], int n, int luachon) {
 
             // So sánh và hoán đổi nếu cần
             if ((luachon == 1 && a[i] > a[j]) || (luachon == 2 && a[i] < a[j])) {
-                setfillstyle(SOLID_FILL, RED);
+                setfillstyle(SOLID_FILL, YELLOW);
                 bar(trai_i, tren, phai_i, duoi);
                 sprintf_s(giatri, "%d", a[i]);
                 double giatri_x = trai_i + (phai_i - trai_i) / 2 - 5;
@@ -75,7 +75,7 @@ void sapXepDoiChoTrucTiep(int a[], int n, int luachon) {
                 outtextxy(giatri_x, giatri_y, giatri);
                 rectangle(trai_i, tren, phai_i, duoi);
 
-                setfillstyle(SOLID_FILL, RED);
+                setfillstyle(SOLID_FILL, YELLOW);
                 bar(trai_j, tren, phai_j, duoi);
                 sprintf_s(giatri, "%d", a[j]);
                 giatri_x = trai_j + (phai_j - trai_j) / 2 - 5;
