@@ -1,4 +1,4 @@
-﻿#include "graphics.h"
+#include "graphics.h"
 #include <windows.h>
 #include <iostream>
 #include <cstdlib>
@@ -7,11 +7,17 @@
 using namespace std;
 
 // Hàm vẽ mảng
-void veMang(int a[], int n, int trai, int tren, int phai, int duoi) {
+void veMang(int a[], bool daSapXep[], int n, int trai, int tren, int phai, int duoi) {
     char giatri[10];
     char text[10];
     for (int i = 0; i < n; i++) {
-        rectangle(trai, tren, phai, duoi);
+        if (daSapXep[i]) {
+            setfillstyle(SOLID_FILL, GREEN);
+            bar(trai, tren, phai, duoi);
+        }
+        else {
+            rectangle(trai, tren, phai, duoi);
+        }
         sprintf_s(giatri, sizeof(giatri), "%d", a[i]);
         double giatri_x = trai + (phai - trai) / 2 - 5;
         double giatri_y = tren + (duoi - tren) / 2.5;
@@ -71,7 +77,7 @@ void toMauDangSoSanh(int trai, int tren, int phai, int duoi, int giatri) {
 }
 
 // Hàm thực hiện thuật toán sắp xếp chèn với minh họa
-void sapXepChen(int a[], int n) {
+void sapXepChen(int a[], bool daSapXep[], int n, bool tangDan) {
     int trai = 50, tren = 100;
     int phai = 150, duoi = 150;
     char giatri[10];
@@ -82,13 +88,14 @@ void sapXepChen(int a[], int n) {
         // Làm nổi bật phần tử được chèn
         nhapNhayHinhChuNhat(50 + i * 100, tren, 150 + i * 100, duoi, key);
 
-        while (j >= 0 && a[j] > key) {
+        while (j >= 0 && ((tangDan && a[j] > key) || (!tangDan && a[j] < key))) {
             // Tô màu các phần tử đang so sánh
             toMauDangSoSanh(50 + j * 100, tren, 150 + j * 100, duoi, a[j]);
             toMauDangSoSanh(50 + (j + 1) * 100, tren, 150 + (j + 1) * 100, duoi, a[j + 1]);
 
             // Di chuyển các phần tử lớn hơn một vị trí về phía trước
             a[j + 1] = a[j];
+            daSapXep[j + 1] = daSapXep[j]; // Giữ nguyên trạng thái đã sắp xếp
 
             // Vẽ lại phần tử đã di chuyển
             setfillstyle(SOLID_FILL, BLACK);
@@ -99,10 +106,15 @@ void sapXepChen(int a[], int n) {
             outtextxy(giatri_x, giatri_y, giatri);
             rectangle(50 + (j + 1) * 100, tren, 150 + (j + 1) * 100, duoi);
 
+            if (daSapXep[j + 1]) {
+                toMauDaSapXep(50 + (j + 1) * 100, tren, 150 + (j + 1) * 100, duoi, a[j + 1]);
+            }
+
             j = j - 1;
             delay(500);
         }
         a[j + 1] = key;
+        daSapXep[j + 1] = true; // Đánh dấu phần tử đã sắp xếp
 
         // Vẽ lại phần tử đã chèn vào đúng vị trí
         setfillstyle(SOLID_FILL, BLACK);
@@ -125,21 +137,30 @@ void sapXepChen(int a[], int n) {
 }
 
 int main() {
+    int luachon;
+    cout << "Ban muon sap xep tang dan hay giam dan?" << endl;
+    cout << "1. Tang dan" << endl;
+    cout << "2. Giam dan" << endl;
+    cout << "Lua chon cua ban: ";
+    cin >> luachon;
+
+    bool tangDan = (luachon == 1);
+
     initwindow(1000, 500, "Chương trình sắp xếp chèn");
     settextstyle(BOLD_FONT, HORIZ_DIR, 2);
-    char vanban[] = "Minh họa sắp xếp chèn";
+    char vanban[] = "Insert Sort";
     outtextxy(350, 50, vanban);
 
     const int n = 8;
     int a[n] = {};
+    bool daSapXep[n] = {};
     srand(time(0));
     for (int i = 0; i < n; i++) {
         a[i] = rand() % 50;
     }
 
-    veMang(a, n, 50, 100, 150, 150);
-
-    sapXepChen(a, n);
+    veMang(a, daSapXep, n, 50, 100, 150, 150);
+    sapXepChen(a, daSapXep, n, tangDan);
 
     getch();
     closegraph();
