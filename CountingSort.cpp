@@ -1,4 +1,4 @@
-#include<iostream>
+﻿#include<iostream>
 #include<cstdlib>
 using namespace std;
 int main()
@@ -21,30 +21,40 @@ int main()
 	cout << "1. Tang dan" << endl;
 	cout << "2. Giam dan" << endl;
 	cout << "Lua chon cua ban : "; cin >> luachon;
-	for (int i = 0; i < n - 1; i++)
+	cout << "Mang sau khi sap xep : ";
+	int m = INT_MIN;
+	int cnt[100000] = {};
+	// đếm
+	for (int i = 0; i < n; i++)
 	{
-		for (int j = i + 1; j < n; j++)
+		cnt[a[i]]++;
+		m = max(m, a[i]);
+	}
+	if (luachon == 1)
+	{
+		for (int i = 0; i <= m; i++)
 		{
-			if (luachon == 2)
+			if (cnt[i] != 0)
 			{
-				if (a[i] < a[j])
+				for (int j = 0; j < cnt[i]; j++)
 				{
-					swap(a[i], a[j]);
-				}
-			}
-			else
-			{
-				if (a[i] > a[j])
-				{
-					swap(a[i], a[j]);
+					cout << i << " ";
 				}
 			}
 		}
 	}
-	cout << "Mang sau khi sap xep : ";
-	for (int i = 0; i < n; i++)
+	else
 	{
-		cout << a[i] << " ";
+		for (int i = m; i >= 0; i--)
+		{
+			if (cnt[i] != 0)
+			{
+				for (int j = 0; j < cnt[i]; j++)
+				{
+					cout << i << " ";
+				}
+			}
+		}
 	}
 	cout << endl;
 	system("pause");

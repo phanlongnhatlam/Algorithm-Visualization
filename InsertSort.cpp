@@ -21,25 +21,28 @@ int main()
 	cout << "1. Tang dan" << endl;
 	cout << "2. Giam dan" << endl;
 	cout << "Lua chon cua ban : "; cin >> luachon;
-	for (int i = 0; i < n - 1; i++)
+	for (int i = 1; i < n; i++)
 	{
-		for (int j = i + 1; j < n; j++)
+		int x = a[i];
+		int pos = i - 1;
+		if (luachon == 1)
 		{
-			if (luachon == 2)
+			while (pos >= 0 && x < a[pos])
 			{
-				if (a[i] < a[j])
-				{
-					swap(a[i], a[j]);
-				}
-			}
-			else
-			{
-				if (a[i] > a[j])
-				{
-					swap(a[i], a[j]);
-				}
+				a[pos + 1] = a[pos];
+				--pos;
 			}
 		}
+		else
+		{
+			while (pos >= 0 && x > a[pos])
+			{
+				a[pos + 1] = a[pos];
+				--pos;
+			}
+		}
+		
+		a[pos + 1] = x;
 	}
 	cout << "Mang sau khi sap xep : ";
 	for (int i = 0; i < n; i++)
