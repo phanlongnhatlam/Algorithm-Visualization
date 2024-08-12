@@ -5,7 +5,9 @@
 #pragma comment(lib, "graphics.lib")
 using namespace std;
 
-// Hàm vẽ một phần tử của hàng đợi
+const int MAX_SIZE = 5;
+
+// vẽ một phần tử hàng đợi
 void vePhanTu(int trai, int tren, int phai, int duoi, int giatri) {
     char giatri_txt[10];
     sprintf_s(giatri_txt, "%d", giatri);
@@ -13,36 +15,38 @@ void vePhanTu(int trai, int tren, int phai, int duoi, int giatri) {
     outtextxy(trai + 20, tren + 10, giatri_txt);
 }
 
-// Hàm vẽ toàn bộ hàng đợi
+// vẽ toàn bộ hàng đợi
 void veQueue(queue<int> q, int trai, int tren, int phai, int duoi) {
-    while (!q.empty()) {
-        vePhanTu(trai, tren, phai, duoi, q.front());
-        q.pop();
+    for (int i = 0; i < MAX_SIZE; i++) {
+        if (!q.empty()) {
+            vePhanTu(trai, tren, phai, duoi, q.front());
+            q.pop();
+        }
+        else {
+            rectangle(trai, tren, phai, duoi);
+        }
         trai += 100;  // Di chuyển vị trí để vẽ phần tử tiếp theo
         phai += 100;
     }
 }
 
-// Hàm thêm phần tử vào hàng đợi
+//thêm phần tử vào hàng đợi
 void enqueueQueue(queue<int>& q, int giatri, int& trai, int& phai, int tren, int duoi) {
-    q.push(giatri);
-    vePhanTu(trai, tren, phai, duoi, giatri);
-    trai += 100;
-    phai += 100;
+    if (q.size() < MAX_SIZE) {
+        q.push(giatri);
+        cleardevice();
+        veQueue(q, trai, tren, phai, duoi);
+    }
+    else {
+        outtextxy(200, 50, (char*)"Queue da day, khong the enqueue!");
+    }
 }
 
-// Hàm xóa phần tử khỏi hàng đợi
+// xóa phần tử khỏi hàng đợi
 void dequeueQueue(queue<int>& q, int& trai, int& phai, int tren, int duoi) {
     if (!q.empty()) {
         q.pop();
-
-        // Vẽ lại hàng đợi sau khi xóa phần tử
-        cleardevice();  // Xóa màn hình
-        char vanban[] = "Queue Visualization";
-        settextstyle(BOLD_FONT, HORIZ_DIR, 2);
-        outtextxy(250, 20, vanban);
-        trai = 100;  // Đặt lại vị trí vẽ phần tử đầu tiên
-        phai = 200;
+        cleardevice();
         veQueue(q, trai, tren, phai, duoi);
     }
     else {
@@ -60,6 +64,9 @@ int main() {
     char vanban[] = "Queue Visualization";
     settextstyle(BOLD_FONT, HORIZ_DIR, 2);
     outtextxy(250, 20, vanban);
+
+    // Vẽ sẵn 5 ô hàng đợi cố định
+    veQueue(q, trai, tren, phai, duoi);
 
     int choice;
     int value;
@@ -85,7 +92,7 @@ int main() {
             break;
         }
 
-        delay(500);  // Để dễ quan sát
+        delay(500); 
 
     } while (choice != 0);
 
