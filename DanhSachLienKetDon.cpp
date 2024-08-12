@@ -1,8 +1,12 @@
-﻿#include "graphics.h"
+#include "graphics.h"
 #include <windows.h>
 #include <iostream>
+#include<cmath>
 #pragma comment(lib, "graphics.lib")
 using namespace std;
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
 
 // Cấu trúc một node trong danh sách liên kết đơn
 struct Node {
@@ -18,11 +22,31 @@ void veNode(int x, int y, int giatri) {
     outtextxy(x + 15, y + 5, giatri_txt); // Vẽ giá trị bên trong node
 }
 
-// Hàm vẽ mũi tên nối các node theo đường chéo
+// Hàm vẽ mũi tên nối các node theo đường chéo với đầu mũi tên đẹp hơn
 void veMuiTen(int x1, int y1, int x2, int y2) {
-    line(x1, y1, x2, y2); // Đường thẳng chính của mũi tên
-    line(x2, y2, x2 - 5, y2 - 5); // Vẽ cánh mũi tên 1
-    line(x2, y2, x2 + 5, y2 - 5); // Vẽ cánh mũi tên 2
+    // Vẽ đường thẳng chính của mũi tên
+    line(x1, y1, x2, y2);
+
+    // Tính toán độ dài và góc của mũi tên
+    int dx = x2 - x1;
+    int dy = y2 - y1;
+    float angle = atan2(dy, dx); // Góc của mũi tên
+
+    // Độ dài của cánh mũi tên
+    int arrowLength = 10;
+
+    // Góc của cánh mũi tên so với thân mũi tên
+    float arrowAngle = M_PI / 6; // 30 độ
+
+    // Tính toán tọa độ của hai cánh mũi tên
+    int xLeft = x2 - arrowLength * cos(angle + arrowAngle);
+    int yLeft = y2 - arrowLength * sin(angle + arrowAngle);
+    int xRight = x2 - arrowLength * cos(angle - arrowAngle);
+    int yRight = y2 - arrowLength * sin(angle - arrowAngle);
+
+    // Vẽ hai cánh mũi tên
+    line(x2, y2, xLeft, yLeft);
+    line(x2, y2, xRight, yRight);
 }
 
 // Hàm vẽ toàn bộ danh sách liên kết theo đường chéo từ trên trái xuống dưới phải
@@ -59,7 +83,8 @@ void insertTail(Node*& head, int giatri, int x, int y) {
 
     if (head == nullptr) {
         head = newNode;
-    } else {
+    }
+    else {
         Node* temp = head;
         while (temp->next != nullptr) {
             temp = temp->next;
@@ -78,14 +103,16 @@ void insertMiddle(Node*& head, int giatri, int pos, int x, int y) {
 
     if (pos == 0) {
         insertHead(head, giatri, x, y);
-    } else {
+    }
+    else {
         Node* temp = head;
         for (int i = 0; temp != nullptr && i < pos - 1; i++) {
             temp = temp->next;
         }
         if (temp == nullptr) {
             insertTail(head, giatri, x, y);
-        } else {
+        }
+        else {
             newNode->next = temp->next;
             temp->next = newNode;
         }
@@ -104,7 +131,8 @@ void deleteHead(Node*& head, int x, int y) {
 
         cleardevice();  // Xóa màn hình
         veDanhSachLienKet(head, x, y);
-    } else {
+    }
+    else {
         outtextxy(200, 50, (char*)"Danh sach rong, khong the xoa!");
     }
 }
@@ -119,7 +147,8 @@ void deleteTail(Node*& head, int x, int y) {
     if (head->next == nullptr) {
         delete head;
         head = nullptr;
-    } else {
+    }
+    else {
         Node* temp = head;
         while (temp->next->next != nullptr) {
             temp = temp->next;
