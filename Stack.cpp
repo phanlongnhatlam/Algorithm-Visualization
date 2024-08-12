@@ -1,9 +1,12 @@
 ﻿#include "graphics.h"
 #include <windows.h>
 #include <iostream>
-#include <stack>
 #pragma comment(lib, "graphics.lib")
 using namespace std;
+
+const int MAX_SIZE = 5;  //co dinh phan tu stack
+int stack[MAX_SIZE];
+int top = -1;  // Vị trí đầu của stack
 
 // Hàm vẽ một phần tử của stack
 void vePhanTu(int trai, int tren, int phai, int duoi, int giatri) {
@@ -14,68 +17,59 @@ void vePhanTu(int trai, int tren, int phai, int duoi, int giatri) {
 }
 
 // Hàm vẽ toàn bộ stack
-void veStack(stack<int> s, int trai, int tren, int phai, int duoi) {
-    while (!s.empty()) {
-        vePhanTu(trai, tren, phai, duoi, s.top());
-        s.pop();
-        tren -= 50;  // Di chuyển vị trí để vẽ phần tử tiếp theo
-        duoi -= 50;
+void veStack(int trai, int tren, int phai, int duoi) {
+    cleardevice();
+    char vanban[] = "Stack Visualization";
+    settextstyle(BOLD_FONT, HORIZ_DIR, 2);
+    outtextxy(250, 20, vanban);
+
+    int currentTop = top;
+
+    // Vẽ từ dưới lên trên, từ stack[0] đến stack[top]
+    for (int i = 0; i <= currentTop; i++) {
+        vePhanTu(trai, duoi - 50 * (i + 1), phai, duoi - 50 * i, stack[i]);
     }
 }
 
-// Hàm thêm phần tử vào stack
-void pushStack(stack<int>& s, int giatri, int& tren, int& duoi, int trai, int phai) {
-    s.push(giatri);
-    vePhanTu(trai, tren, phai, duoi, giatri);
-    tren -= 50;
-    duoi -= 50;
-}
-
-// Hàm xóa phần tử khỏi stack
-void popStack(stack<int>& s, int& tren, int& duoi, int trai, int phai) {
-    if (!s.empty()) {
-        tren += 50;
-        duoi += 50;
-        s.pop();
-
-        // Vẽ lại stack sau khi xóa phần tử
-        cleardevice();  // Xóa màn hình
-        char vanban[] = "Stack Visualization";
-        settextstyle(BOLD_FONT, HORIZ_DIR, 2);
-        outtextxy(250, 20, vanban);
-        veStack(s, trai, tren, phai, duoi);
+void pushStack(int value) {
+    if (top < MAX_SIZE - 1) {
+        top++;
+        stack[top] = value;
+        veStack(300, 500, 400, 550);
     }
     else {
-        outtextxy(200, 50, (char*)"Stack rong, khong the pop!");
+        cout << "Stack da day" << endl;
+    }
+}
+
+void popStack() {
+    if (top >= 0) {
+        top--;
+        veStack(300, 500, 400, 550);
+    }
+    else {
+        cout << "Stack dang rong" << endl;
     }
 }
 
 int main() {
     initwindow(800, 600, "Stack Visualization");
 
-    stack<int> s;
-    int trai = 300, phai = 400;
-    int tren = 500, duoi = 550;
-
-    char vanban[] = "Stack Visualization";
-    settextstyle(BOLD_FONT, HORIZ_DIR, 2);
-    outtextxy(250, 20, vanban);
-
     int choice;
     int value;
 
     do {
-        cout << "Lua chon: 1. Push | 2. Pop | 0. Thoat: ";
+        cout << "Laa chon: 1. Push | 2. Pop | 0. Thoat: ";
         cin >> choice;
 
         switch (choice) {
         case 1:
             cout << "Nhap gia tri can push: ";
             cin >> value;
-            pushStack(s, value, tren, duoi, trai, phai);
+            pushStack(value);
             break;
         case 2:
-            popStack(s, tren, duoi, trai, phai);
+            popStack();
             break;
         case 0:
             cout << "Thoat chuong trinh." << endl;
@@ -85,7 +79,7 @@ int main() {
             break;
         }
 
-        delay(500);  // Để dễ quan sát
+        delay(500); 
 
     } while (choice != 0);
 
