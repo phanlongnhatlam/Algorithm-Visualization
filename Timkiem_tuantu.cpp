@@ -83,8 +83,7 @@ int main() {
     else {
         cout << "Khong tim thay gia tri " << key << " trong mang." << endl;
     }
-
-    
+    system("pause");
     closegraph();
     return 0;
 }
