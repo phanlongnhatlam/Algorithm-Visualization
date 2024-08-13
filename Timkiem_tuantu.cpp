@@ -84,7 +84,7 @@ int main() {
         cout << "Khong tim thay gia tri " << key << " trong mang." << endl;
     }
 
-    getch();
+    
     closegraph();
     return 0;
 }
