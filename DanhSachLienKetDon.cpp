@@ -201,21 +201,33 @@ int main() {
     int value, pos;
 
     do {
-        cout << "Lua chon: 1. Insert Head | 2. Insert Tail | 3. Insert Middle | 4. Delete Head | 5. Delete Tail | 6. Delete Middle | 0. Thoat: ";
+        system("cls");
+        cout << "=============MENU============" << endl;
+        cout << "0.Thoat chuong trinh" << endl;
+        cout << "1.Insert head" << endl;
+        cout << "2.Insert tail" << endl;
+        cout << "3.Insert middle" << endl;
+        cout << "4.Delete head" << endl;
+        cout << "5.Delete tail" << endl;
+        cout << "6.Delete middle" << endl;
+        cout << "=============================" << endl;
+        cout << "Lua chon cua ban : ";
         cin >> choice;
-
         switch (choice) {
         case 1:
+            system("cls");
             cout << "Nhap gia tri can insert vao dau: ";
             cin >> value;
             insertHead(head, value, x, y);
             break;
         case 2:
+            system("cls");
             cout << "Nhap gia tri can insert vao cuoi: ";
             cin >> value;
             insertTail(head, value, x, y);
             break;
         case 3:
+            system("cls");
             cout << "Nhap gia tri can insert vao giua: ";
             cin >> value;
             cout << "Nhap vi tri: ";
@@ -223,29 +235,31 @@ int main() {
             insertMiddle(head, value, pos, x, y);
             break;
         case 4:
+            system("cls");
             deleteHead(head, x, y);
             break;
         case 5:
+            system("cls");
             deleteTail(head, x, y);
             break;
         case 6:
+            system("cls");
             cout << "Nhap vi tri can xoa: ";
             cin >> pos;
             deleteMiddle(head, pos, x, y);
             break;
         case 0:
+            system("cls");
             cout << "Thoat chuong trinh." << endl;
             break;
         default:
+            system("cls");
             cout << "Lua chon khong hop le. Vui long chon lai." << endl;
             break;
         }
-
         delay(500);  // Để dễ quan sát
-
     } while (choice != 0);
-
-    getch();
+    system("pause");
     closegraph();
     return 0;
 }
