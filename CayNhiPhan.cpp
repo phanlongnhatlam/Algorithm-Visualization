@@ -1,4 +1,4 @@
-﻿#include "graphics.h"
+#include"graphics.h"
 #include <iostream>
 #include <queue>
 #include <windows.h>
@@ -124,11 +124,17 @@ int main() {
     int choice, value;
 
     do {
-        cout << "Lua chon: 1. Them Node | 2. Xoa Node | 0. Thoat: ";
+        system("cls");
+        cout << "=============MENU============" << endl;
+        cout << "0.Thoat chuong trinh" << endl;
+        cout << "1.Insert node" << endl;
+        cout << "2.Delete node" << endl;
+        cout << "=============================" << endl;
+        cout << "Lua chon cua ban : ";
         cin >> choice;
-
         switch (choice) {
         case 1:
+            system("cls");
             cout << "Nhap gia tri Node: ";
             cin >> value;
             root = insertNode(root, value);
@@ -136,6 +142,7 @@ int main() {
             veCay(root, 500, 50, 200, 80);  // Vẽ cây với tọa độ gốc ban đầu
             break;
         case 2:
+            system("cls");
             cout << "Nhap gia tri can xoa: ";
             cin >> value;
             root = deleteNode(root, value);
@@ -143,17 +150,16 @@ int main() {
             veCay(root, 500, 50, 200, 80);  // Vẽ lại cây sau khi xóa
             break;
         case 0:
+            system("cls");
             cout << "Thoat chuong trinh." << endl;
             break;
         default:
+            system("cls");
             cout << "Lua chon khong hop le. Vui long chon lai." << endl;
             break;
         }
-
-        delay(500);  // Có thể loại bỏ nếu không cần thiết
-
     } while (choice != 0);
-
+    system("pause");
     closegraph();
     return 0;
 }
