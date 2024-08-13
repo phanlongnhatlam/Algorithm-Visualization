@@ -1,4 +1,4 @@
-﻿#include "graphics.h"
+#include "graphics.h"
 #include <windows.h>
 #include <iostream>
 #pragma comment(lib, "graphics.lib")
@@ -85,22 +85,31 @@ int main() {
     veStack(300, 500, 400, 550);  // Vẽ stack ban đầu với các ô trống
 
     do {
-        cout << "Lua chon: 1. Push | 2. Pop | 0. Thoat: ";
+        system("cls");
+        cout << "=============MENU============" << endl;
+        cout << "0.Thoat chuong trinh" << endl;
+        cout << "1.Push" << endl;
+        cout << "2.Pop" << endl;
+        cout << "=============================" << endl;
+        cout << "Lua chon cua ban : ";
         cin >> choice;
-
         switch (choice) {
         case 1:
+            system("cls");
             cout << "Nhap gia tri can push: ";
             cin >> value;
             pushStack(value);
             break;
         case 2:
+            system("cls");
             popStack();
             break;
         case 0:
+            system("cls");
             cout << "Thoat chuong trinh." << endl;
             break;
         default:
+            system("cls");
             cout << "Lua chon khong hop le. Vui long chon lai." << endl;
             break;
         }
