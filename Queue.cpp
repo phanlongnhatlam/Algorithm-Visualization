@@ -1,4 +1,4 @@
-﻿#include "graphics.h"
+#include "graphics.h"
 #include <windows.h>
 #include <iostream>
 #include <queue>
@@ -72,31 +72,36 @@ int main() {
     int value;
 
     do {
-        cout << "Lua chon: 1. Enqueue | 2. Dequeue | 0. Thoat: ";
+        system("cls");
+        cout << "=============MENU============" << endl;
+        cout << "0.Thoat chuong trinh" << endl;
+        cout << "1.Enqueue" << endl;
+        cout << "2.Dequeue" << endl;
+        cout << "=============================" << endl;
+        cout << "Lua chon cua ban : ";
         cin >> choice;
-
         switch (choice) {
         case 1:
+            system("cls");
             cout << "Nhap gia tri can enqueue: ";
             cin >> value;
             enqueueQueue(q, value, trai, phai, tren, duoi);
             break;
         case 2:
+            system("cls");
             dequeueQueue(q, trai, phai, tren, duoi);
             break;
         case 0:
+            system("cls");
             cout << "Thoat chuong trinh." << endl;
             break;
         default:
+            system("cls");
             cout << "Lua chon khong hop le. Vui long chon lai." << endl;
             break;
         }
-
-        delay(500); 
-
     } while (choice != 0);
-
-    getch();
+    system("pause");
     closegraph();
     return 0;
 }
