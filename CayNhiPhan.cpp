@@ -1,6 +1,5 @@
-#include"graphics.h"
+#include "graphics.h"
 #include <iostream>
-#include <queue>
 #include <windows.h>
 #pragma comment(lib, "graphics.lib")
 
@@ -17,7 +16,7 @@ struct Node {
 Node* createNode(int data) {
     Node* newNode = new Node();
     if (!newNode) {
-        cout << "Loi cap phat bo nho!" << endl;
+        cout << "Lỗi cấp phát bộ nhớ!" << endl;
         return NULL;
     }
     newNode->data = data;
@@ -33,7 +32,7 @@ Node* insertNode(Node* root, int data) {
     }
 
     if (data == root->data) {
-        cout << "Gia tri da ton tai trong cay. Khong the chen." << endl;
+        cout << "Giá trị đã tồn tại trong cây. Không thể chèn." << endl;
         return root;
     }
     else if (data < root->data) {
@@ -46,19 +45,17 @@ Node* insertNode(Node* root, int data) {
     return root;
 }
 
-// Hàm tìm giá trị nhỏ nhất của cây
+// Hàm tìm giá trị nhỏ nhất của cây bằng đệ quy
 Node* minValueNode(Node* node) {
-    Node* current = node;
-    while (current && current->left != NULL)
-        current = current->left;
-
-    return current;
+    if (node->left == NULL)
+        return node;
+    return minValueNode(node->left);
 }
 
 // Hàm xóa một nút khỏi cây nhị phân
 Node* deleteNode(Node* root, int data) {
     if (root == NULL) {
-        cout << "Gia tri khong ton tai trong cay. Khong the xoa." << endl;
+        cout << "Giá trị không tồn tại trong cây. Không thể xóa." << endl;
         return root;
     }
 
