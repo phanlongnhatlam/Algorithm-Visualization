@@ -1,4 +1,4 @@
-﻿#include "graphics.h"
+#include "graphics.h"
 #include <windows.h>
 #include <iostream>
 #include <cstdlib>
@@ -7,10 +7,18 @@
 using namespace std;
 
 // Hàm vẽ mảng
-void veMang(int a[], int n, int trai, int tren, int phai, int duoi) {
+void veMang(int a[], int n, int trai, int tren, int phai, int duoi, int sapxepToi) {
     char giatri[10];
     for (int i = 0; i < n; i++) {
+        if (i >= sapxepToi) {  // Những phần tử đã sắp xếp xong
+            setfillstyle(SOLID_FILL, GREEN);
+        }
+        else {
+            setfillstyle(SOLID_FILL, BLACK);
+        }
+        bar(trai, tren, phai, duoi);
         rectangle(trai, tren, phai, duoi);
+
         sprintf_s(giatri, "%d", a[i]);
         double giatri_x = trai + (phai - trai) / 2 - 5;
         double giatri_y = tren + (duoi - tren) / 2.5;
@@ -20,20 +28,20 @@ void veMang(int a[], int n, int trai, int tren, int phai, int duoi) {
     }
 }
 
-// Hàm nhấp nháy hình chữ nhật
+// Hàm nhấp nháy hình chữ nhật trước khi hoán đổi
 void nhapNhayHinhChuNhat(int trai, int tren, int phai, int duoi, int giatri) {
     char giatri_txt[10];
     sprintf_s(giatri_txt, "%d", giatri);
     double giatri_x = trai + (phai - trai) / 2 - 5;
     double giatri_y = tren + (duoi - tren) / 2.5;
 
-    for (int k = 0; k < 3; k++) {
-        setfillstyle(SOLID_FILL, RED);
+    for (int k = 0; k < 2; k++) {
+        setfillstyle(SOLID_FILL, YELLOW); // Nhấp nháy màu vàng
         bar(trai, tren, phai, duoi);
         outtextxy(giatri_x, giatri_y, giatri_txt);
         rectangle(trai, tren, phai, duoi);
         delay(150);
-        setfillstyle(SOLID_FILL, BLACK);
+        setfillstyle(SOLID_FILL, BLACK); // Quay lại màu đen
         bar(trai, tren, phai, duoi);
         outtextxy(giatri_x, giatri_y, giatri_txt);
         rectangle(trai, tren, phai, duoi);
@@ -42,59 +50,67 @@ void nhapNhayHinhChuNhat(int trai, int tren, int phai, int duoi, int giatri) {
 }
 
 // Hàm heapify cho một cây con có gốc là node i
-void heapify(int arr[], int n, int i) {
+void heapify(int arr[], int n, int i, int sapxepToi, bool tangDan) {
     int largest = i;  // Khởi tạo largest là gốc
     int l = 2 * i + 1;  // left = 2*i + 1
     int r = 2 * i + 2;  // right = 2*i + 2
 
-    int trai = 50 + i * 100;
-    int phai = 150 + i * 100;
-    int trai_l = 50 + l * 100;
-    int phai_l = 150 + l * 100;
-    int trai_r = 50 + r * 100;
-    int phai_r = 150 + r * 100;
-
-    // Nếu nút con bên trái lớn hơn gốc
-    if (l < n && arr[l] > arr[largest]) {
-        nhapNhayHinhChuNhat(trai_l, 100, phai_l, 150, arr[l]);
-        largest = l;
+    // Điều kiện so sánh dựa trên lựa chọn tăng dần hoặc giảm dần
+    if (tangDan) {
+        if (l < n && arr[l] < arr[largest]) {
+            largest = l;
+        }
+        if (r < n && arr[r] < arr[largest]) {
+            largest = r;
+        }
     }
-
-    // Nếu nút con bên phải lớn hơn largest
-    if (r < n && arr[r] > arr[largest]) {
-        nhapNhayHinhChuNhat(trai_r, 100, phai_r, 150, arr[r]);
-        largest = r;
+    else {
+        if (l < n && arr[l] > arr[largest]) {
+            largest = l;
+        }
+        if (r < n && arr[r] > arr[largest]) {
+            largest = r;
+        }
     }
 
     // Nếu largest không phải là gốc
     if (largest != i) {
-        nhapNhayHinhChuNhat(trai, 100, phai, 150, arr[i]);
+        nhapNhayHinhChuNhat(50 + i * 100, 100, 150 + i * 100, 150, arr[i]);
+        nhapNhayHinhChuNhat(50 + largest * 100, 100, 150 + largest * 100, 150, arr[largest]);
         swap(arr[i], arr[largest]);
-        veMang(arr, n, 50, 100, 150, 150);
+
+        // Vẽ lại mảng sau khi hoán đổi
+        veMang(arr, n, 50, 100, 150, 150, sapxepToi);
         delay(500);
 
         // Đệ quy heapify cây con bị ảnh hưởng
-        heapify(arr, n, largest);
+        heapify(arr, n, largest, sapxepToi, tangDan);
     }
 }
 
 // Hàm thực hiện thuật toán Heap Sort với minh họa
-void heapSort(int arr[], int n) {
+void heapSort(int arr[], int n, bool tangDan) {
     // Xây dựng heap (sắp xếp lại mảng)
     for (int i = n / 2 - 1; i >= 0; i--)
-        heapify(arr, n, i);
+        heapify(arr, n, i, n, tangDan);
 
     // Trích xuất từng phần tử từ heap
     for (int i = n - 1; i > 0; i--) {
-        // Di chuyển gốc hiện tại đến cuối
+        // Nhấp nháy màu vàng trước khi swap
         nhapNhayHinhChuNhat(50, 100, 150, 150, arr[0]);
+        nhapNhayHinhChuNhat(50 + i * 100, 100, 150 + i * 100, 150, arr[i]);
         swap(arr[0], arr[i]);
-        veMang(arr, n, 50, 100, 150, 150);
+
+        // Vẽ lại mảng sau khi hoán đổi, đánh dấu phần tử đã sắp xếp
+        veMang(arr, n, 50, 100, 150, 150, i);
         delay(500);
 
         // Gọi max heapify trên heap bị giảm
-        heapify(arr, i, 0);
+        heapify(arr, i, 0, i, tangDan);
     }
+
+    // Tô màu xanh lá cây cho phần tử cuối cùng
+    veMang(arr, n, 50, 100, 150, 150, 0);
 }
 
 int main() {
@@ -103,7 +119,7 @@ int main() {
     char vanban[] = "Heap Sort";
     outtextxy(375, 50, vanban);
 
-    const int n = 5;
+    const int n = 8;
 
     int arr[n] = {};
     srand(static_cast<unsigned int>(time(0)));
@@ -111,11 +127,22 @@ int main() {
         arr[i] = rand() % 50;
     }
 
-    veMang(arr, n, 50, 100, 150, 150);
+    veMang(arr, n, 50, 100, 150, 150, n);
 
-    heapSort(arr, n);
+    // Lựa chọn tăng dần hoặc giảm dần
+    bool giamdan = true;  // Đặt là false để sắp xếp giảm dần
+    cout << "Ban muon sap xep tang dan hay giam dan ?" << endl;
+    cout << "1. Tang dan" << endl;
+    cout << "2. Giam dan" << endl;
+    cout << "Lua chon cua ban : ";
+    int luachon;
+    cin >> luachon;
+    if (luachon == 1) giamdan = false;
+    heapSort(arr, n, giamdan);
 
     getch();
     closegraph();
+    system("pause");
     return 0;
 }
+
