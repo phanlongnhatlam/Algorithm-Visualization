@@ -1,4 +1,4 @@
-﻿#include "graphics.h"
+#include "graphics.h"
 #include <windows.h>
 #include <iostream>
 #include <cstdlib>
@@ -51,7 +51,7 @@ void veBangBam(Node* table[]) {
     }
 }
 
-// Hàm để thêm phần tử vào cuối danh sách liên kết trong bảng băm
+// Hàm để thêm phần tử vào bảng băm
 void themPhanTu(Node* table[], int key) {
     int index = hashFunction(key);
 
@@ -61,22 +61,11 @@ void themPhanTu(Node* table[], int key) {
     outtextxy(START_X, START_Y - 50, msg);
     delay(1000);
 
-    // Tạo nút mới
+    // Thêm phần tử vào danh sách liên kết tương ứng
     Node* newNode = new Node();
     newNode->data = key;
-    newNode->next = nullptr;
-
-    // Thêm vào cuối danh sách liên kết tại vị trí hash
-    if (table[index] == nullptr) {
-        table[index] = newNode;
-    }
-    else {
-        Node* temp = table[index];
-        while (temp->next != nullptr) {
-            temp = temp->next;
-        }
-        temp->next = newNode;
-    }
+    newNode->next = table[index];
+    table[index] = newNode;
 
     cleardevice(); // Xóa màn hình
     veBangBam(table); // Vẽ lại bảng băm với phần tử mới
@@ -147,7 +136,6 @@ int main() {
             cout << "Lua chon khong hop le. Vui long chon lai.\n";
         }
     }
-
     closegraph();
     return 0;
 }
