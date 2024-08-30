@@ -54,12 +54,12 @@ void drawStack() {
     int stackY = 50;    // Tọa độ Y bắt đầu của stack
     int boxSize = 30;   // Kích thước mỗi ô trong stack
 
+    // Clear the stack area before drawing
+    setfillstyle(SOLID_FILL, BLACK);
+    bar(stackX - 1, stackY - 1, stackX + boxSize + 1, stackY + (MAX_NODES * boxSize) + 1);
+
     // Sao chép stack gốc vào một stack tạm thời để duyệt
     stack<int> tempStack = nodeStack;
-
-    // Clear the stack area before drawing
-    setcolor(BLACK);
-    bar(stackX - 1, stackY - 1, stackX + boxSize + 1, stackY + (MAX_NODES * boxSize) + 1);
 
     // Vẽ các phần tử trong stack từ trên xuống
     int index = 0;  // Chỉ số để vẽ từng ô stack
@@ -81,32 +81,71 @@ void drawStack() {
     }
 }
 
-
 // Hàm DFS sử dụng đệ quy
 void DFS(int node) {
     visited[node] = true;
     nodeStack.push(node); // Đẩy đỉnh vào stack
     dfsResult[resultIndex++] = 'A' + node;
+
+    // Clear area for the node
+    setfillstyle(SOLID_FILL, BLACK); // Use background color
+    bar(x[node] - 22, y[node] - 22, x[node] + 22, y[node] + 22); // Clear the node area
+
+    for (int i = 0; i < MAX_NODES; i++) {
+        if (visited[i]) {
+            drawNode(i, GREEN);
+        }
+        else {
+            drawNode(i, LIGHTGRAY);
+        }
+    }
+
+    for (int i = 0; i < MAX_NODES; i++) {
+        for (int j = i + 1; j < MAX_NODES; j++) {
+            if (graph[i][j]) {
+                drawEdge(i, j);
+            }
+        }
+    }
+
     drawNode(node, GREEN);
-    cout << "Duyet dinh: " << (char)('A' + node) << endl;
     drawStack();
     delay(2000); // Tăng thời gian trễ lên 2 giây
 
     for (int i = 0; i < MAX_NODES; i++) {
         if (graph[node][i] && !visited[i]) {
-            cout << "Di tu " << (char)('A' + node) << " den " << (char)('A' + i) << endl;
             drawEdge(node, i);
             DFS(i);
         }
     }
+
     nodeStack.pop(); // Quay lui và bỏ đỉnh khỏi stack
-    cout << "Backtrack ve " << (char)('A' + node) << endl;
-    drawNode(node, YELLOW); // Hiển thị quay lui bằng màu sắc
+
+    // Clear area for the node
+    setfillstyle(SOLID_FILL, BLACK); // Use background color
+    bar(x[node] - 22, y[node] - 22, x[node] + 22, y[node] + 22); // Clear the node area
+
+    for (int i = 0; i < MAX_NODES; i++) {
+        if (visited[i]) {
+            drawNode(i, YELLOW);
+        }
+        else {
+            drawNode(i, LIGHTGRAY);
+        }
+    }
+
+    for (int i = 0; i < MAX_NODES; i++) {
+        for (int j = i + 1; j < MAX_NODES; j++) {
+            if (graph[i][j]) {
+                drawEdge(i, j);
+            }
+        }
+    }
+
+    drawNode(node, LIGHTBLUE); // Đổi màu khi kết thúc duyệt
     drawStack();
     delay(2000); // Tăng thời gian trễ lên 2 giây
-    drawNode(node, LIGHTBLUE); // Đổi màu khi kết thúc duyệt
 }
-
 
 int main() {
     initwindow(600, 400, "Minh Hoa DFS voi Stack");
@@ -135,7 +174,6 @@ int main() {
         cout << dfsResult[i] << " ";
     }
     cout << endl;
-
 
     getch();
     closegraph();
