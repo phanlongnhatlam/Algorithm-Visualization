@@ -8,17 +8,12 @@ using namespace std;
 // Hàm vẽ mảng
 void veMang(int a[], int n, int trai, int tren, int phai, int duoi) {
     char giatri[10];
-    char text[10];
     for (int i = 0; i < n; i++) {
         rectangle(trai, tren, phai, duoi);
-        sprintf_s(giatri, sizeof(giatri), "%d", a[i]);
+        sprintf_s(giatri, "%d", a[i]);
         double giatri_x = trai + (phai - trai) / 2 - 5;
         double giatri_y = tren + (duoi - tren) / 2.5;
         outtextxy(giatri_x, giatri_y, giatri);
-        sprintf_s(text, sizeof(text), "%d", i);
-        int text_x = trai + (phai - trai) / 2 - 5;
-        int text_y = duoi + 10;
-        outtextxy(text_x, text_y, text);
         trai += 100;
         phai += 100;
     }
@@ -26,10 +21,10 @@ void veMang(int a[], int n, int trai, int tren, int phai, int duoi) {
 // Hàm tô màu các phần tử đang so sánh
 void toMauDangSoSanh(int trai, int tren, int phai, int duoi, int giatri) {
     char giatri_txt[10];
-    sprintf_s(giatri_txt, sizeof(giatri_txt), "%d", giatri);
+    sprintf_s(giatri_txt,"%d", giatri);
     double giatri_x = trai + (phai - trai) / 2 - 5;
     double giatri_y = tren + (duoi - tren) / 2.5;
-    setfillstyle(SOLID_FILL, LIGHTBLUE);
+    setfillstyle(SOLID_FILL, YELLOW);
     bar(trai, tren, phai, duoi);
     outtextxy(giatri_x, giatri_y, giatri_txt);
     rectangle(trai, tren, phai, duoi);
@@ -37,7 +32,7 @@ void toMauDangSoSanh(int trai, int tren, int phai, int duoi, int giatri) {
 // Hàm tô màu các phần tử đã kiểm tra nhưng không khớp
 void toMauKhongKhop(int trai, int tren, int phai, int duoi, int giatri) {
     char giatri_txt[10];
-    sprintf_s(giatri_txt, sizeof(giatri_txt), "%d", giatri);
+    sprintf_s(giatri_txt, "%d", giatri);
     double giatri_x = trai + (phai - trai) / 2 - 5;
     double giatri_y = tren + (duoi - tren) / 2.5;
     setfillstyle(SOLID_FILL, DARKGRAY);
@@ -52,7 +47,6 @@ bool binarySearch(int a[], int n, int x) {
         int m = (l + r) / 2;
         toMauDangSoSanh(50 + m * 100, 100, 150 + m * 100, 150, a[m]);
         delay(800);
-
         if (a[m] == x) {
             // Nếu tìm thấy, tô màu phần tử khớp
             toMauDangSoSanh(50 + m * 100, 100, 150 + m * 100, 150, a[m]);
@@ -99,16 +93,16 @@ int main() {
     cout << "Nhap gia tri can tim: ";
     cin >> x;
     char message[50];
-    sprintf_s(message, sizeof(message), "Gia tri can tim la: %d", x);
-    outtextxy(350, 350, message);
+    sprintf_s(message,"Gia tri can tim la: %d", x);
+    outtextxy(350, 250, message);
 
     if (binarySearch(a, n, x)) {
-        sprintf_s(message, sizeof(message), "Tim thay gia tri %d!", x);
-        outtextxy(350, 400, message);
+        sprintf_s(message,"Tim thay gia tri %d !", x);
+        outtextxy(350, 300, message);
     }
     else {
-        sprintf_s(message, sizeof(message), "Khong tim thay gia tri %d!", x);
-        outtextxy(350, 400, message);
+        sprintf_s(message, "Khong tim thay gia tri %d !", x);
+        outtextxy(350, 300, message);
     }
     system("pause");
     closegraph();
