@@ -53,7 +53,7 @@ void toMauDangSoSanh(int trai, int tren, int phai, int duoi, int giatri) {
     rectangle(trai, tren, phai, duoi);
 }
 
-// Hàm tô màu các phần tử đang nhấp nháy
+// Hàm tô màu lại các phần tử đang nhấp nháy
 void highlightSubArray(int a[], int start, int end, int trai, int tren) {
     for (int i = 0; i < 2; i++) {  // Nhấp nháy 2 lần
         for (int j = start; j <= end; j++) {
@@ -120,6 +120,7 @@ void merge(int a[], int l, int m, int r, bool ascending) {
     xoaManHinh(50 + l * (RECT_WIDTH ), 100, 50 + r * (RECT_WIDTH) + RECT_WIDTH, 150);
     // Vẽ lại mảng sau khi hợp nhất
     veMang(a, r - l + 1, 50 + l * (RECT_WIDTH ), 100, 50 + l * (RECT_WIDTH ) + RECT_WIDTH, 150);
+    // đảm bảo các phần tử đã được sắp xếp sẽ được đổ màu xanh lá :3
     for (int i = l; i <= r; i++) {
         toMauDaSapXep(50 + i * (RECT_WIDTH ), 100, 50 + i * (RECT_WIDTH ) + RECT_WIDTH, 150, a[i]);
     }
@@ -139,7 +140,7 @@ void mergeSort(int a[], int l, int r, bool ascending) {
     }
 }
 int main() {
-    initwindow(1000, 500, "Merge Sort");
+    initwindow(1200, 500, "Merge Sort");
     settextstyle(BOLD_FONT, HORIZ_DIR, 2);
     char vanban[] = "Merge Sort";
     outtextxy(375, 50, vanban);
