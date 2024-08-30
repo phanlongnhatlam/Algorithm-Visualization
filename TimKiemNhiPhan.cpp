@@ -8,12 +8,17 @@ using namespace std;
 // Hàm vẽ mảng
 void veMang(int a[], int n, int trai, int tren, int phai, int duoi) {
     char giatri[10];
+    char text[10];
     for (int i = 0; i < n; i++) {
         rectangle(trai, tren, phai, duoi);
         sprintf_s(giatri, "%d", a[i]);
         double giatri_x = trai + (phai - trai) / 2 - 5;
         double giatri_y = tren + (duoi - tren) / 2.5;
         outtextxy(giatri_x, giatri_y, giatri);
+        sprintf_s(text, "%d", i);
+        int text_x = trai + (phai - trai) / 2 - 5;
+        int text_y = duoi + 10;
+        outtextxy(text_x, text_y, text);
         trai += 100;
         phai += 100;
     }
