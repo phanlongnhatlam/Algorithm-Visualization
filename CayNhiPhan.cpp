@@ -2,37 +2,27 @@
 #include <iostream>
 #include <windows.h>
 #pragma comment(lib, "graphics.lib")
-
 using namespace std;
-
-// Cấu trúc của một nút trong cây nhị phân
 struct Node {
     int data;
     Node* left;
     Node* right;
 };
-
 // Hàm tạo nút mới
 Node* createNode(int data) {
     Node* newNode = new Node();
-    if (!newNode) {
-        cout << "Lỗi cấp phát bộ nhớ!" << endl;
-        return NULL;
-    }
     newNode->data = data;
     newNode->left = newNode->right = NULL;
     return newNode;
 }
-
 // Hàm thêm nút vào cây nhị phân
 Node* insertNode(Node* root, int data) {
     if (root == NULL) {
         root = createNode(data);
         return root;
     }
-
     if (data == root->data) {
-        cout << "Giá trị đã tồn tại trong cây. Không thể chèn." << endl;
+        cout << "Khong the chen gia tri nay !!!" << endl;
         return root;
     }
     else if (data < root->data) {
@@ -41,48 +31,46 @@ Node* insertNode(Node* root, int data) {
     else {
         root->right = insertNode(root->right, data);
     }
-
     return root;
 }
-
-// Hàm tìm giá trị nhỏ nhất của cây bằng đệ quy
-Node* minValueNode(Node* node) {
-    if (node->left == NULL)
-        return node;
-    return minValueNode(node->left);
-}
-
-// Hàm xóa một nút khỏi cây nhị phân
-Node* deleteNode(Node* root, int data) {
-    if (root == NULL) {
-        cout << "Giá trị không tồn tại trong cây. Không thể xóa." << endl;
-        return root;
-    }
-
-    if (data < root->data) {
-        root->left = deleteNode(root->left, data);
-    }
-    else if (data > root->data) {
-        root->right = deleteNode(root->right, data);
+// Hàm tìm và thay thế giá trị nút bị xóa bằng nút trái nhất của cây con phải
+void searchLeftMostNode(Node*& deletedNode, Node*& replacedNode) {
+    if (replacedNode->left != NULL) {
+        searchLeftMostNode(deletedNode, replacedNode->left);
     }
     else {
+        deletedNode->data = replacedNode->data;
+        deletedNode = replacedNode;
+        replacedNode = replacedNode->right;
+    }
+}
+// Hàm xóa một nút khỏi cây nhị phân bằng đệ quy
+void deleteNodeRecursive(Node*& root, int data) {
+    if (root == NULL) {
+        cout << "Cay nhi phan rong !!! " << endl;
+        return;
+    }
+    // tìm bên trái
+    if (data < root->data) {
+        deleteNodeRecursive(root->left, data);
+    }
+    // tìm bên phải
+    else if (data > root->data) {
+        deleteNodeRecursive(root->right, data);
+    }
+    else {
+        Node* deletedNode = root;
         if (root->left == NULL) {
-            Node* temp = root->right;
-            delete root;
-            return temp;
+            root = root->right;
         }
         else if (root->right == NULL) {
-            Node* temp = root->left;
-            delete root;
-            return temp;
+            root = root->left;
         }
-
-        Node* temp = minValueNode(root->right);
-        root->data = temp->data;
-        root->right = deleteNode(root->right, temp->data);
+        else {
+            searchLeftMostNode(deletedNode, root->right);
+        }
+        delete deletedNode;
     }
-
-    return root;
 }
 
 // Hàm vẽ một nút cây nhị phân
@@ -92,19 +80,17 @@ void veNode(int x, int y, int data) {
     circle(x, y, 20);
     outtextxy(x - 10, y - 10, data_txt);
 }
-
 // Hàm vẽ cạnh của cây nhị phân
 void veCanh(int x1, int y1, int x2, int y2) {
     line(x1, y1, x2, y2);
 }
-
 // Hàm vẽ cây nhị phân
 void veCay(Node* root, int x, int y, int khoangCachX, int khoangCachY) {
     if (root != NULL) {
         veNode(x, y, root->data);
         if (root->left != NULL) {
             veCanh(x, y + 20, x - khoangCachX + 20, y + khoangCachY - 20);
-            veCay(root->left, x - khoangCachX, y + khoangCachY, khoangCachX / 2, khoangCachY);
+            veCay(root->left, x - khoangCachX, y + khoangCachY, khoangCachX / 2, khoangCachY); // sử dụng đệ quy, mỗi lần đệ quy thì khoảng cách bị /2 
         }
         if (root->right != NULL) {
             veCanh(x, y + 20, x + khoangCachX - 20, y + khoangCachY - 20);
@@ -112,22 +98,18 @@ void veCay(Node* root, int x, int y, int khoangCachX, int khoangCachY) {
         }
     }
 }
-
 int main() {
     initwindow(1000, 600, "Cay Nhi Phan Visualization");
-
     Node* root = NULL;
-
     int choice, value;
-
     do {
         system("cls");
         cout << "=============MENU============" << endl;
-        cout << "0.Thoat chuong trinh" << endl;
-        cout << "1.Insert node" << endl;
-        cout << "2.Delete node" << endl;
+        cout << "0. Thoat chuong trinh" << endl;
+        cout << "1. Insert node" << endl;
+        cout << "2. Delete node" << endl;
         cout << "=============================" << endl;
-        cout << "Lua chon cua ban : ";
+        cout << "Lua chon cua ban: ";
         cin >> choice;
         switch (choice) {
         case 1:
@@ -136,15 +118,15 @@ int main() {
             cin >> value;
             root = insertNode(root, value);
             cleardevice();  // Xóa màn hình để vẽ lại cây
-            veCay(root, 500, 50, 200, 80);  // Vẽ cây với tọa độ gốc ban đầu
+            veCay(root, 500, 50, 200, 80);  // Vẽ cây
             break;
         case 2:
             system("cls");
             cout << "Nhap gia tri can xoa: ";
             cin >> value;
-            root = deleteNode(root, value);
+            deleteNodeRecursive(root, value);
             cleardevice();  // Xóa màn hình để vẽ lại cây
-            veCay(root, 500, 50, 200, 80);  // Vẽ lại cây sau khi xóa
+            veCay(root, 500, 50, 200, 80);  // Vẽ lại cây 
             break;
         case 0:
             system("cls");
@@ -152,9 +134,10 @@ int main() {
             break;
         default:
             system("cls");
-            cout << "Lua chon khong hop le. Vui long chon lai." << endl;
+            cout << "Lua chon khong hop le. Vui long chon lai!" << endl;
             break;
         }
+        delay(500);
     } while (choice != 0);
     system("pause");
     closegraph();
