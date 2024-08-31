@@ -1,11 +1,55 @@
-﻿#include "graphics.h"
+#include "graphics.h"
 #include <iostream>
-#include <stack>
-
+#pragma comment(lib, "graphics.lib")
 using namespace std;
+struct ArrQueue {
+    int front, rear;
+    int capacity;
+    int* Q;
+    ArrQueue(int cap = 100) {
+        Q = new int[cap];
+        capacity = cap;
+        front = rear = -1;
+    }
 
+    bool isEmpty() {
+        return (front == -1);
+    }
+
+    bool isFull() {
+        return (rear - front == -1) || (rear - front == capacity - 1);
+    }
+
+    void EnQueue(int x) {
+        if (!isFull()) {
+            if (isEmpty()) {
+                front = 0;
+            }
+            if (rear == capacity - 1) {
+                rear = -1;
+            }
+            Q[++rear] = x;
+        }
+        else {
+            cout << "Hang doi da day !!!" << endl;
+        }
+    }
+    int DeQueue() {
+        int x = Q[front];
+        if (rear == front) {
+            rear = front = -1;
+        }
+        else {
+            front++;
+            if (front >= capacity) {
+                front = 0;
+            }
+        }
+        return x;
+    }
+};
 const int MAX_NODES = 8;
-char dfsResult[MAX_NODES];
+char bfsResult[MAX_NODES];
 int resultIndex = 0;
 int graph[MAX_NODES][MAX_NODES] = {
     {0, 1, 1, 0, 0, 0, 0, 0},  // A
@@ -17,143 +61,98 @@ int graph[MAX_NODES][MAX_NODES] = {
     {0, 0, 1, 0, 0, 0, 0, 1},  // G
     {0, 0, 0, 1, 1, 1, 1, 0}   // H
 };
-
 bool visited[MAX_NODES] = { false };
-int dfsIndex = 0;           // To track the current index in the dfsResult array
-stack<int> nodeStack;
-
 int x[MAX_NODES] = { 200, 100, 300, 50, 150, 250, 350, 200 };
 int y[MAX_NODES] = { 50, 150, 150, 250, 250, 250, 250, 350 };
-
-// Chuyển đổi đỉnh từ ký tự sang số
 int charToIndex(char c) {
     return c - 'A';
 }
-
-// Hàm vẽ đỉnh
-void drawNode(int index, int color) {
-    setcolor(color);
+// Hàm vẽ đỉnh với nhãn dễ nhìn hơn
+void drawNode(int index, int borderColor, int fillColor) {
+    setcolor(borderColor);
     circle(x[index], y[index], 20);
-    floodfill(x[index], y[index], color);
-
+    setfillstyle(SOLID_FILL, fillColor);
+    floodfill(x[index], y[index], borderColor);
     char label[2];
     sprintf_s(label, "%c", 'A' + index);
-    setcolor(WHITE);
-    outtextxy(x[index] - 5, y[index] - 5, label);
+    // Tăng kích thước chữ và căn chỉnh giữa
+    settextstyle(SANS_SERIF_FONT, HORIZ_DIR, 2);  // Kích thước chữ lớn hơn
+    setbkcolor(fillColor);  // Đặt màu nền của chữ giống màu lấp đầy của node
+    setcolor(BLACK);  // Màu chữ là màu đen để tương phản
+    outtextxy(x[index] - 10, y[index] - 10, label);  // Điều chỉnh vị trí nhãn để dễ nhìn hơn
 }
-
-// Hàm vẽ cạnh
 void drawEdge(int u, int v) {
     setcolor(WHITE);
     line(x[u], y[u], x[v], y[v]);
 }
-
-// Hàm vẽ stack
-void drawStack() {
-    int stackX = 450;   // Tọa độ X bắt đầu của stack
-    int stackY = 50;    // Tọa độ Y bắt đầu của stack
-    int boxSize = 30;   // Kích thước mỗi ô trong stack
-
-    // Clear the stack area before drawing
-    setfillstyle(SOLID_FILL, BLACK);
-    bar(stackX - 1, stackY - 1, stackX + boxSize + 1, stackY + (MAX_NODES * boxSize) + 1);
-
-    // Sao chép stack gốc vào một stack tạm thời để duyệt
-    stack<int> tempStack = nodeStack;
-
-    // Vẽ các phần tử trong stack từ trên xuống
-    int index = 0;  // Chỉ số để vẽ từng ô stack
-    while (!tempStack.empty()) {
-        int node = tempStack.top();  // Lấy phần tử trên cùng của stack
-        tempStack.pop();             // Xóa phần tử trên cùng khỏi stack tạm
-
-        // Vẽ hình chữ nhật đại diện cho phần tử trong stack
-        setcolor(WHITE);
-        rectangle(stackX, stackY + index * boxSize, stackX + boxSize, stackY + (index + 1) * boxSize);
-
-        // Hiển thị ký tự của đỉnh trong stack
+void drawQueue(ArrQueue& nodeQueue) {
+    int queueX = 450;   // Tọa độ X bắt đầu của hàng đợi
+    int queueY = 350;   // Tọa độ Y bắt đầu của hàng đợi (từ dưới cùng)
+    int boxSize = 30;   // Kích thước mỗi ô trong hàng đợi
+    // Xóa vùng hiển thị hàng đợi trước khi vẽ
+    setfillstyle(SOLID_FILL, BLACK);  // Nền đen
+    bar(queueX - 1, queueY - (MAX_NODES * boxSize) - 1, queueX + boxSize + 1, queueY + 1);
+    // Duyệt qua các phần tử trong hàng đợi
+    int index = 0;
+    int i = nodeQueue.front;
+    while (i != nodeQueue.rear + 1) {
+        // Vẽ hình chữ nhật đại diện cho phần tử trong hàng đợi
+        setcolor(WHITE);  // Viền trắng
+        rectangle(queueX, queueY - (index + 1) * boxSize, queueX + boxSize, queueY - index * boxSize);
+        // Hiển thị ký tự của đỉnh trong hàng đợi
         char label[2];
-        sprintf_s(label, "%c", 'A' + node);  // Biến đổi số thành ký tự (A, B, C, ...)
-        setcolor(WHITE);
-        outtextxy(stackX + 10, stackY + index * boxSize + 5, label);
-
-        index++;  // Di chuyển xuống để vẽ phần tử tiếp theo
+        sprintf_s(label, "%c", 'A' + nodeQueue.Q[i]);  // Biến đổi số thành ký tự (A, B, C, ...)
+        setbkcolor(BLACK);  // Nền chữ màu đen
+        setcolor(WHITE);  // Màu chữ là màu trắng
+        outtextxy(queueX + 10, queueY - (index + 1) * boxSize + 5, label);  // Căn giữa chữ trong ô
+        index++;
+        i = (i + 1) % nodeQueue.capacity;  // Di chuyển tới phần tử tiếp theo
     }
 }
 
-// Hàm DFS sử dụng đệ quy
-void DFS(int node) {
-    visited[node] = true;
-    nodeStack.push(node); // Đẩy đỉnh vào stack
-    dfsResult[resultIndex++] = 'A' + node;
-
-    // Clear area for the node
-    setfillstyle(SOLID_FILL, BLACK); // Use background color
-    bar(x[node] - 22, y[node] - 22, x[node] + 22, y[node] + 22); // Clear the node area
-
-    for (int i = 0; i < MAX_NODES; i++) {
-        if (visited[i]) {
-            drawNode(i, GREEN);
+void BFS(int startNode, int endNode) {
+    ArrQueue nodeQueue(MAX_NODES);
+    nodeQueue.EnQueue(startNode);
+    visited[startNode] = true;
+    while (!nodeQueue.isEmpty()) {
+        int node = nodeQueue.DeQueue();
+        bfsResult[resultIndex++] = 'A' + node;
+        if (node == endNode) {
+            break;
         }
-        else {
-            drawNode(i, LIGHTGRAY);
-        }
-    }
-
-    for (int i = 0; i < MAX_NODES; i++) {
-        for (int j = i + 1; j < MAX_NODES; j++) {
-            if (graph[i][j]) {
-                drawEdge(i, j);
+        for (int i = 0; i < MAX_NODES; i++) {
+            if (visited[i]) {
+                drawNode(i, YELLOW, YELLOW);
+            }
+            else {
+                drawNode(i, LIGHTGRAY, LIGHTGRAY);
             }
         }
-    }
-
-    drawNode(node, GREEN);
-    drawStack();
-    delay(2000); // Tăng thời gian trễ lên 2 giây
-
-    for (int i = 0; i < MAX_NODES; i++) {
-        if (graph[node][i] && !visited[i]) {
-            drawEdge(node, i);
-            DFS(i);
-        }
-    }
-
-    nodeStack.pop(); // Quay lui và bỏ đỉnh khỏi stack
-
-    // Clear area for the node
-    setfillstyle(SOLID_FILL, BLACK); // Use background color
-    bar(x[node] - 22, y[node] - 22, x[node] + 22, y[node] + 22); // Clear the node area
-
-    for (int i = 0; i < MAX_NODES; i++) {
-        if (visited[i]) {
-            drawNode(i, YELLOW);
-        }
-        else {
-            drawNode(i, LIGHTGRAY);
-        }
-    }
-
-    for (int i = 0; i < MAX_NODES; i++) {
-        for (int j = i + 1; j < MAX_NODES; j++) {
-            if (graph[i][j]) {
-                drawEdge(i, j);
+        for (int i = 0; i < MAX_NODES; i++) {
+            for (int j = i + 1; j < MAX_NODES; j++) {
+                if (graph[i][j]) {
+                    drawEdge(i, j);
+                }
             }
         }
+        drawNode(node, YELLOW, YELLOW);
+        drawQueue(nodeQueue);
+        delay(2000);
+        for (int i = 0; i < MAX_NODES; i++) {
+            if (graph[node][i] && !visited[i]) {
+                visited[i] = true;
+                nodeQueue.EnQueue(i);
+            }
+        }
+        drawQueue(nodeQueue);
+        delay(2000);
     }
-
-    drawNode(node, LIGHTBLUE); // Đổi màu khi kết thúc duyệt
-    drawStack();
-    delay(2000); // Tăng thời gian trễ lên 2 giây
 }
-
 int main() {
-    initwindow(600, 400, "Minh Hoa DFS voi Stack");
-
+    initwindow(600, 400, "Minh Hoa BFS voi Hang Doi Tu Chinh");
     for (int i = 0; i < MAX_NODES; i++) {
-        drawNode(i, LIGHTGRAY);
+        drawNode(i, LIGHTGRAY, LIGHTGRAY);
     }
-
     for (int i = 0; i < MAX_NODES; i++) {
         for (int j = i + 1; j < MAX_NODES; j++) {
             if (graph[i][j]) {
@@ -161,21 +160,19 @@ int main() {
             }
         }
     }
-
-    cout << "Nhap dinh bat dau DFS (A-H): ";
+    cout << "Nhap dinh bat dau BFS (A-H): ";
     char startNode;
     cin >> startNode;
-
-    DFS(charToIndex(startNode));
-
-    // In kết quả duyệt DFS
-    cout << "\nKet qua duyet DFS: ";
+    cout << "Nhap dinh ket thuc BFS (A-H): ";
+    char endNode;
+    cin >> endNode;
+    BFS(charToIndex(startNode), charToIndex(endNode));
+    cout << "\nKet qua duyet BFS: ";
     for (int i = 0; i < resultIndex; i++) {
-        cout << dfsResult[i] << " ";
+        cout << bfsResult[i] << " ";
     }
     cout << endl;
-
-    getch();
+    system("pause");
     closegraph();
     return 0;
 }
