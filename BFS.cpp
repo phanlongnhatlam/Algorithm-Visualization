@@ -128,16 +128,12 @@ void BFS(int startNode, int endNode) {
                 drawNode(i, YELLOW, YELLOW);
             }
         }
-        for (int i = 0; i < MAX_NODES; i++) {
-            for (int j = i + 1; j < MAX_NODES; j++) {
-                if (graph[i][j]) {
-                    drawEdge(i, j);
-                }
-            }
-        }
+        // vẽ node đã thăm
         drawNode(node, YELLOW, YELLOW);
+        // vẽ hàng đợi
         drawQueue(nodeQueue);
-        delay(2000);
+        delay(1500);
+        // kiểm tra đỉnh nào chưa thăm, và đánh dấu nó rồi enqueue
         for (int i = 0; i < MAX_NODES; i++) {
             if (graph[node][i] && !visited[i]) {
                 visited[i] = true;
@@ -149,10 +145,12 @@ void BFS(int startNode, int endNode) {
     }
 }
 int main() {
-    initwindow(600, 400, "Minh Hoa BFS voi Hang Doi Tu Chinh");
+    initwindow(600, 400, "Minh Hoa BFS");
+    // vẽ các node
     for (int i = 0; i < MAX_NODES; i++) {
         drawNode(i, LIGHTGRAY, LIGHTGRAY);
     }
+    // hàm này dùng để vẽ cạnh nối (trong ma trận kề nếu giá trị là 0 thì không vẽ :v)
     for (int i = 0; i < MAX_NODES; i++) {
         for (int j = i + 1; j < MAX_NODES; j++) {
             if (graph[i][j]) {
@@ -167,7 +165,7 @@ int main() {
     char endNode;
     cin >> endNode;
     BFS(charToIndex(startNode), charToIndex(endNode));
-    cout << "\nKet qua duyet BFS: ";
+    cout << "Ket qua duyet BFS: ";
     for (int i = 0; i < resultIndex; i++) {
         cout << bfsResult[i] << " ";
     }
