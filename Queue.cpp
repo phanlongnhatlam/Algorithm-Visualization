@@ -48,6 +48,7 @@ struct ArrQueue {
         }
         return x;
     }
+    // số lượng phần tử có trong hàng đợi
     int getSize() {
         if (isEmpty()) return 0;
         if (rear >= front) return rear - front + 1;
@@ -73,31 +74,35 @@ void xoaPhanTu(int trai, int tren, int phai, int duoi) {
 void veQueue(ArrQueue& q, int trai, int tren, int phai, int duoi) {
     int index = q.front;
     int soLuongPhanTu = q.getSize();
-    for (int i = 0; i < MAX_SIZE; i++) {
-        if (i < soLuongPhanTu && index != -1) {
+    for (int i = 0; i < MAX_SIZE; i++) 
+    {
+        if (index != -1) 
+        {
             vePhanTu(trai + i * 100, tren, phai + i * 100, duoi, q.Q[index]);
             index++;
             if (index >= q.capacity) {
                 index = 0;
             }
         }
-        else {
+        else 
+        {
             xoaPhanTu(trai + i * 100, tren, phai + i * 100, duoi); // Xóa phần tử (ô trống)
         }
     }
 }
 // Thêm phần tử vào hàng đợi
 void enqueueQueue(ArrQueue& q, int giatri, int& trai, int& phai, int tren, int duoi) {
-    if (!q.isFull()) {
+    if (!q.isFull()) 
+    {
         q.EnQueue(giatri);
-
-        // Vẽ chỉ riêng phần tử mới tại vị trí rear
+        // Vẽ phần tử mới tại vị trí sau rear
         int rearIndex = q.rear;
         int rearPosition = (trai + rearIndex * 100); // Tính vị trí dựa trên rear
         vePhanTu(rearPosition, tren, rearPosition + 100, duoi, giatri);
 
     }
-    else {
+    else 
+    {
         cout << "Hang doi da day !!!" << endl;
     }
 }
@@ -109,7 +114,8 @@ void dequeueQueue(ArrQueue& q, int& trai, int& phai, int tren, int duoi) {
         xoaPhanTu(trai + indexToDelete * 100, tren, phai + indexToDelete * 100, duoi);
         q.DeQueue();
     }
-    else {
+    else 
+    {
         cout << "Hang doi rong !!! " << endl;
     }
 }
