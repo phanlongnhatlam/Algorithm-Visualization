@@ -8,55 +8,68 @@ struct ArrQueue {
     int front, rear;
     int capacity;
     int* Q;
-    ArrQueue(int cap = 6) {
+    ArrQueue(int cap = 6) 
+    {
         Q = new int[cap];
         capacity = cap;
         front = rear = -1;
     }
-
-    bool isEmpty() {
+    bool isEmpty() 
+    {
         return (front == -1);
     }
 
-    bool isFull() {
+    bool isFull() 
+    {
         return (rear - front == -1) || (rear - front == capacity - 1);
     }
-    void EnQueue(int x) {
-        if (!isFull()) {
-            if (isEmpty()) {
+    void EnQueue(int x) 
+    {
+        if (!isFull()) 
+        {
+            if (isEmpty()) 
+            {
                 front = 0;
             }
-            if (rear == capacity - 1) {
+            if (rear == capacity - 1) 
+            {
                 rear = -1;
             }
             Q[++rear] = x;
         }
-        else {
+        else
+        {
             cout << "Hang doi da day!!!" << endl;
         }
     }
-    int DeQueue() {
+    int DeQueue() 
+    {
         int x = Q[front];
-        if (rear == front) {
+        if (rear == front) 
+        {
             rear = front = -1;
         }
-        else {
+        else 
+        {
             front++;
-            if (front >= capacity) {
+            if (front >= capacity) 
+            {
                 front = 0;
             }
         }
         return x;
     }
     // số lượng phần tử có trong hàng đợi
-    int getSize() {
+    int getSize() 
+    {
         if (isEmpty()) return 0;
         if (rear >= front) return rear - front + 1;
         return capacity - front + rear + 1;
     }
 };
 // Vẽ phần tử hàng đợi
-void vePhanTu(int trai, int tren, int phai, int duoi, int giatri) {
+void vePhanTu(int trai, int tren, int phai, int duoi, int giatri)
+{
     setfillstyle(SOLID_FILL, BLACK); 
     bar(trai, tren, phai, duoi);      
     char giatri_txt[10];
@@ -65,13 +78,15 @@ void vePhanTu(int trai, int tren, int phai, int duoi, int giatri) {
     outtextxy(trai + 20, tren + 10, giatri_txt); // Vẽ giá trị của phần tử
 }
 // Xóa phần tử : tô đen hết 
-void xoaPhanTu(int trai, int tren, int phai, int duoi) {
+void xoaPhanTu(int trai, int tren, int phai, int duoi) 
+{
     setfillstyle(SOLID_FILL, BLACK); 
     bar(trai, tren, phai, duoi);      
     rectangle(trai, tren, phai, duoi);
 }
 // Vẽ toàn bộ hàng đợi
-void veQueue(ArrQueue& q, int trai, int tren, int phai, int duoi) {
+void veQueue(ArrQueue& q, int trai, int tren, int phai, int duoi)
+{
     int index = q.front;
     int soLuongPhanTu = q.getSize();
     for (int i = 0; i < MAX_SIZE; i++) 
@@ -91,7 +106,8 @@ void veQueue(ArrQueue& q, int trai, int tren, int phai, int duoi) {
     }
 }
 // Thêm phần tử vào hàng đợi
-void enqueueQueue(ArrQueue& q, int giatri, int& trai, int& phai, int tren, int duoi) {
+void enqueueQueue(ArrQueue& q, int giatri, int& trai, int& phai, int tren, int duoi) 
+{
     if (!q.isFull()) 
     {
         q.EnQueue(giatri);
@@ -107,8 +123,10 @@ void enqueueQueue(ArrQueue& q, int giatri, int& trai, int& phai, int tren, int d
     }
 }
 // Xóa phần tử khỏi hàng đợi
-void dequeueQueue(ArrQueue& q, int& trai, int& phai, int tren, int duoi) {
-    if (!q.isEmpty()) {
+void dequeueQueue(ArrQueue& q, int& trai, int& phai, int tren, int duoi) 
+{
+    if (!q.isEmpty()) 
+    {
         // Chỉ xóa phần tử tại vị trí đầu tiên
         int indexToDelete = q.front;
         xoaPhanTu(trai + indexToDelete * 100, tren, phai + indexToDelete * 100, duoi);
@@ -120,11 +138,13 @@ void dequeueQueue(ArrQueue& q, int& trai, int& phai, int tren, int duoi) {
     }
 }
 // Hàm vẽ tiêu đề
-void veTieuDe() {
+void veTieuDe() 
+{
     settextstyle(BOLD_FONT, HORIZ_DIR, 2);
     outtextxy(250, 20, (char*)"Queue Visualization");
 }
-int main() {
+int main() 
+{
     initwindow(1000, 600, "Queue Visualization");
     ArrQueue q(MAX_SIZE);
     int trai = 100, phai = 200;
