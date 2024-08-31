@@ -96,6 +96,7 @@ void drawQueue(ArrQueue& nodeQueue) {
     // Duyệt qua các phần tử trong hàng đợi
     int index = 0;
     int i = nodeQueue.front;
+    // rear + 1 : các phần tử có trong hàng đợi
     while (i != nodeQueue.rear + 1) {
         // Vẽ hình chữ nhật đại diện cho phần tử trong hàng đợi
         setcolor(WHITE);  // Viền trắng
