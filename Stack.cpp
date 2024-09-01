@@ -63,6 +63,10 @@ void vePhanTu(int trai, int tren, int phai, int duoi, int giatri, bool isEmpty) 
     {
         sprintf_s(giatri_txt, "%d", giatri);
     }
+    else
+    {
+        sprintf_s(giatri_txt, "");
+    }
     rectangle(trai, tren, phai, duoi);
     // Tính toán để căn giữa giá trị trong ô
     int textWidth = textwidth(giatri_txt);
@@ -78,7 +82,7 @@ void veStack(int trai, int tren, int phai, int duoi) {
     settextstyle(BOLD_FONT, HORIZ_DIR, 2);
     outtextxy(250, 20, vanban);
     // Hiển thị thông báo stack rỗng hoặc đầy ngay dưới tiêu đề
-    if (stack.isEmpty()) 
+    if (stack.isEmpty())
     {
         char emptyMessage[] = "Stack dang rong!";
         outtextxy(250, 60, emptyMessage);
@@ -90,25 +94,25 @@ void veStack(int trai, int tren, int phai, int duoi) {
     }
 
     // Vẽ các phần tử của stack
-    for (int i = 0; i < MAX_SIZE; i++) 
+    for (int i = 0; i < MAX_SIZE; i++)
     {
-        if (i <= stack.top) 
+        if (i <= stack.top)
         {
             vePhanTu(trai, duoi - 50 * (i + 1), phai, duoi - 50 * i, stack.S[i], false);
         }
-        else 
+        else
         {
             vePhanTu(trai, duoi - 50 * (i + 1), phai, duoi - 50 * i, 0, true);
         }
     }
 }
 
-void pushStack(int value) 
+void pushStack(int value)
 {
     stack.Push(value);
     veStack(300, 500, 400, 550);
 }
-void popStack() 
+void popStack()
 {
     stack.Pop();
     veStack(300, 500, 400, 550);
@@ -117,7 +121,7 @@ int main() {
     initwindow(800, 600, "Stack Visualization");
     int choice;
     int value;
-    veStack(300, 500, 400, 550);  
+    veStack(300, 500, 400, 550);
     do {
         system("cls");
         cout << "=============MENU============" << endl;
