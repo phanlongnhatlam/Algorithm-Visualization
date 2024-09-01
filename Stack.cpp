@@ -51,7 +51,7 @@ struct ArrayStack {
         }
         else {
             cout << "Stack dang rong!!!" << endl;
-            return -1; // hoặc giá trị báo lỗi khác
+            return -1; // giá trị báo lỗi 
         }
     }
 };
