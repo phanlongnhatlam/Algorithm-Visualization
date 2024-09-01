@@ -75,7 +75,7 @@ void drawNode(int index, int borderColor, int fillColor) {
     floodfill(x[index], y[index], borderColor);
     char label[2];
     sprintf_s(label, "%c", 'A' + index);
-    settextstyle(SANS_SERIF_FONT, HORIZ_DIR, 2); 
+    settextstyle(SANS_SERIF_FONT, HORIZ_DIR, 2);
     setbkcolor(fillColor);  // Đặt màu nền của chữ giống màu lấp đầy của node
     setcolor(BLACK);  // Màu chữ là màu đen để tương phản
     outtextxy(x[index] - 10, y[index] - 10, label);  // Điều chỉnh vị trí nhãn 
@@ -111,18 +111,14 @@ void drawQueue(ArrQueue& nodeQueue) {
         i = (i + 1) % nodeQueue.capacity;  // Di chuyển tới phần tử tiếp theo
     }
 }
-
-void BFS(int startNode, int endNode) {
+void BFS(int startNode) {
     ArrQueue nodeQueue(MAX_NODES);
     nodeQueue.EnQueue(startNode);
     visited[startNode] = true;
     while (!nodeQueue.isEmpty()) {
         int node = nodeQueue.DeQueue();
         bfsResult[resultIndex++] = 'A' + node; // ví dụ A+3 thì ra D tại vì lưu vô mảng char <;
-        // nếu gặp tới node cần tới thì dừng
-        if (node == endNode) {
-            break;
-        }
+
         // đi từng node, node nào thăm rồi thì đánh dấu màu vàng, còn không thì vẫn là màu xám
         for (int i = 0; i < MAX_NODES; i++) {
             if (visited[i]) {
@@ -142,7 +138,7 @@ void BFS(int startNode, int endNode) {
             }
         }
         drawQueue(nodeQueue);
-        delay(2000);
+        delay(1500);
     }
 }
 int main() {
@@ -162,10 +158,7 @@ int main() {
     cout << "Nhap dinh bat dau BFS (A-H): ";
     char startNode;
     cin >> startNode;
-    cout << "Nhap dinh ket thuc BFS (A-H): ";
-    char endNode;
-    cin >> endNode;
-    BFS(charToIndex(startNode), charToIndex(endNode));
+    BFS(charToIndex(startNode));
     cout << "Ket qua duyet BFS: ";
     for (int i = 0; i < resultIndex; i++) {
         cout << bfsResult[i] << " ";
