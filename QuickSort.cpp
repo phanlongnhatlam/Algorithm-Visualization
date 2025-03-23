@@ -139,12 +139,7 @@ void quickSort(int a[], int l, int r, int luachon) {
 }
 
 int main() {
-    int luachon;
-    cout << "Ban muon sap xep tang dan hay giam dan?" << endl;
-    cout << "1. Tang dan" << endl;
-    cout << "2. Giam dan" << endl;
-    cout << "Lua chon cua ban: ";
-    cin >> luachon;
+   
     initwindow(1000, 600, "QuickSort Visualization");
     settextstyle(BOLD_FONT, HORIZ_DIR, 2);
     char vanban[] = "QuickSort";
@@ -156,6 +151,12 @@ int main() {
         a[i] = rand() % 50;
     }
     drawArray(a, n, -1, -1, -1, -1, false,-1);
+     int luachon;
+    cout << "Ban muon sap xep tang dan hay giam dan?" << endl;
+    cout << "1. Tang dan" << endl;
+    cout << "2. Giam dan" << endl;
+    cout << "Lua chon cua ban: ";
+    cin >> luachon;
     delay(1000);
     quickSort(a, 0, n - 1, luachon);
     drawArray(a, n, -1, -1, -1, -1, true, -1);
