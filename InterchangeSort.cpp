@@ -136,11 +136,7 @@ void sapXepDoiChoTrucTiep(int a[], int n, int luachon) {
     rectangle(trai_cuoi, tren, phai_cuoi, duoi);
 }
 int main() {
-    int luachon;
-    cout << "Ban muon sap xep tang dan hay giam dan?" << endl;
-    cout << "1. Tang dan" << endl;
-    cout << "2. Giam dan" << endl;
-    cout << "Lua chon cua ban: "; cin >> luachon;
+   
     initwindow(1000, 500, "Ahihi");
     settextstyle(BOLD_FONT, HORIZ_DIR, 2);
     char vanban[] = "Interchange Sort";
@@ -152,6 +148,11 @@ int main() {
         a[i] = rand() % 50;
     }
     veMang(a, n, 50, 100, 150, 150);
+     int luachon;
+    cout << "Ban muon sap xep tang dan hay giam dan?" << endl;
+    cout << "1. Tang dan" << endl;
+    cout << "2. Giam dan" << endl;
+    cout << "Lua chon cua ban: "; cin >> luachon;
     sapXepDoiChoTrucTiep(a, n, luachon);
     system("pause");
     closegraph();
