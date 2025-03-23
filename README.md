@@ -1,4 +1,4 @@
-Algorithm Visualization
+# Algorithm Visualization
 
 📚 Introduction
 
