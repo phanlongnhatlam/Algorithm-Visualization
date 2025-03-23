@@ -7,6 +7,9 @@ This project visualizes various algorithms using C++ with graphics library. It a
 💡 Features
 
 Sorting Algorithms: Bubble Sort, Selection Sort, Insertion Sort, Merge Sort, Quick Sort, Heap Sort, Interchange Sort.
+
 Searching Algorithms: Binary Search, Sequential Search.
+
 Data Structures: Stack, Queue, Linked List, Hash Table, Binary Tree.
+
 Graph Traversal: Breadth-First Search (BFS).
