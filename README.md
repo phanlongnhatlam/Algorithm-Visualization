@@ -16,15 +16,17 @@ Graph Traversal: Breadth-First Search (BFS).
 
 📂 Project Structure
 
-/Your Project Name  
-├── /.vs  
-├── /Your Project Name  
-│   ├── Your Project Name.vcxproj  
-│   ├── Your Project Name.vcxproj.filters  
-│   ├── Your Project Name.vcxproj.user  
-│   ├── graphics.h .............. # Include graphics header  
-│   └── graphics.lib ............ # Include graphics library  
+<pre>
+/Your Project Name
+├── /.vs
+├── /Your Project Name
+│   ├── Your Project Name.vcxproj
+│   ├── Your Project Name.vcxproj.filters
+│   ├── Your Project Name.vcxproj.user
+│   ├── graphics.h .............. # Include graphics header
+│   └── graphics.lib ............ # Include graphics library
 └── /Your Visual Studio Solution (.sln)
+</pre>
 
 🛠️ Installation
 
