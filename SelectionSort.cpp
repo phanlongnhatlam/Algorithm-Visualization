@@ -36,11 +36,6 @@ void NhapNhay(int left1, int top1, int right1, int bottom1, int value1,int left2
     }
 }
 int main() {
-    int luachon;
-    cout << "Ban muon sap xep tang dan hay giam dan ?" << endl;
-    cout << "1. Tang dan" << endl;
-    cout << "2. Giam dan" << endl;
-    cout << "Lua chon cua ban : "; cin >> luachon;
     initwindow(1000, 500, "chuong trinh");
     settextstyle(BOLD_FONT, HORIZ_DIR, 2);
     char vanban[] = "Selection Sort";
@@ -72,6 +67,11 @@ int main() {
         left += 100;
         right += 100;
     }
+    int luachon;
+    cout << "Ban muon sap xep tang dan hay giam dan ?" << endl;
+    cout << "1. Tang dan" << endl;
+    cout << "2. Giam dan" << endl;
+    cout << "Lua chon cua ban : "; cin >> luachon;
     // reset lại từ đầu
     left = 50;
     right = 150;
