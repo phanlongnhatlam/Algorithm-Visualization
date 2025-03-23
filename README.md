@@ -22,15 +22,15 @@ Graph Traversal: Breadth-First Search (BFS).
 
 │── /Your Project Name    
 
-│   │── Your Project Name.vcxproj
+│     │── Your Project Name.vcxproj
 
-│   │── Your Project Name.vcxproj.filters
+│     │── Your Project Name.vcxproj.filters
 
-│   │── Your Project Name.vcxproj.user
+│     │── Your Project Name.vcxproj.user
 
-│   │── graphics.h            # Include graphics header
+│     │── graphics.h            # Include graphics header
 
-│   │── graphics.lib          # Include graphics libary
+│     │── graphics.lib          # Include graphics libary
 
 │── /Your Visual Studio Solution (.sln)
 
