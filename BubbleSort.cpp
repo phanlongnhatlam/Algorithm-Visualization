@@ -154,10 +154,6 @@ void sapXepNoiBot(int a[], int n, int luachon) {
 }
 int main() {
     int luachon;
-    cout << "Ban muon sap xep tang dan hay giam dan?" << endl;
-    cout << "1. Tang dan" << endl;
-    cout << "2. Giam dan" << endl;
-    cout << "Lua chon cua ban: "; cin >> luachon;
     initwindow(1000, 500, "Chương trình");
     settextstyle(BOLD_FONT, HORIZ_DIR, 2);
     char vanban[] = "Bubble Sort";
@@ -169,6 +165,10 @@ int main() {
         a[i] = rand() % 50;
     }
     veMang(a, n, 50, 100, 150, 150);
+     cout << "Ban muon sap xep tang dan hay giam dan?" << endl;
+    cout << "1. Tang dan" << endl;
+    cout << "2. Giam dan" << endl;
+    cout << "Lua chon cua ban: "; cin >> luachon;
     sapXepNoiBot(a, n, luachon);
     system("pause");
     getch();
