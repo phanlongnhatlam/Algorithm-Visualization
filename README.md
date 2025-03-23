@@ -1,10 +1,10 @@
 # Algorithm Visualization
 
-📚 Introduction
+## 📚 Introduction
 
 This project visualizes various algorithms using C++ with graphics library. It aims to provide an interactive way to understand the internal workings of popular algorithms such as sorting techniques, searching methods, data structures, and traversal methods.
 
-💡 Features
+## 💡 Features
 
 Sorting Algorithms: Bubble Sort, Selection Sort, Insertion Sort, Merge Sort, Quick Sort, Heap Sort, Interchange Sort.
 
@@ -14,7 +14,7 @@ Data Structures: Stack, Queue, Linked List, Hash Table, Binary Tree.
 
 Graph Traversal: Breadth-First Search (BFS).
 
-📂 Project Structure
+## 📂 Project Structure
 
 <pre>
 /Your Project Name
@@ -28,9 +28,7 @@ Graph Traversal: Breadth-First Search (BFS).
 └── /Your Visual Studio Solution (.sln)
 </pre>
 
-🛠️ Installation
-
-Creating a New Project in Visual Studio
+## 🛠️ Project Setup
 
 1. Open Visual Studio and Create a new project.
 2. Right-click on the Project → Properties → Configuration Manager
