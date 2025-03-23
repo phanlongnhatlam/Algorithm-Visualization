@@ -28,7 +28,7 @@ Graph Traversal: Breadth-First Search (BFS).
 
 │── ── │── Your Project Name.vcxproj.user
 
-│── ── │── graphics.h ............ # Include graphics header
+│── ── │── graphics.h .............. # Include graphics header
 
 │── ── │── graphics.lib ............ # Include graphics libary
 
