@@ -118,13 +118,6 @@ void sapXepChen(int a[], bool daSapXep[], int n, bool tangDan) {
     }
 }
 int main() {
-    int luachon;
-    cout << "Ban muon sap xep tang dan hay giam dan?" << endl;
-    cout << "1. Tang dan" << endl;
-    cout << "2. Giam dan" << endl;
-    cout << "Lua chon cua ban: ";
-    cin >> luachon;
-    bool tangDan = (luachon == 1);
     initwindow(1000, 500, "Chương trình sắp xếp chèn");
     settextstyle(BOLD_FONT, HORIZ_DIR, 2);
     char vanban[] = "Insert Sort";
@@ -137,6 +130,13 @@ int main() {
         a[i] = rand() % 50;
     }
     veMang(a, n, 50, 100, 150, 150);
+    int luachon;
+    cout << "Ban muon sap xep tang dan hay giam dan?" << endl;
+    cout << "1. Tang dan" << endl;
+    cout << "2. Giam dan" << endl;
+    cout << "Lua chon cua ban: ";
+    cin >> luachon;
+    bool tangDan = (luachon == 1);
     delay(1000);
     sapXepChen(a, daSapXep, n, tangDan);
     getch();
